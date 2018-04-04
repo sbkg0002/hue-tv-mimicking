@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
+##############################
+# Requirements:
+# * phue: install via `pip install phue`
+# * Philips Hue Bridge
+# Hue API: https://www.developers.meethue.com/documentation/core-concepts
+##############################
 from phue import Bridge
 import random
 from time import sleep
 ##############################
-# Hue API: https://www.developers.meethue.com/documentation/core-concepts
-##############################
 bridgeIP='192.168.178.33'
-mimickLampId=3
+mimickLampId=2
 ##############################
 # Connect to bridge
 b = Bridge(bridgeIP)
 
-#If running for the first time, press button on bridge and run with b.connect() uncommented
+# If running for the first time, press button on bridge and run with b.connect() uncommented
 # b.connect()
 
 # Save the state so we can re-set it upon exit
@@ -22,6 +26,7 @@ save_state = {
              }
 
 try:
+    print ("Starting mimicking, use <Ctrl-C> to stop")
     while True:
         # hue range = 0 - 65280
         # But both max and min are red.
@@ -37,6 +42,7 @@ try:
         sleep(random.randint(1,5) * random.random())
 except KeyboardInterrupt:
     # Restore lamp state
+    print ("Caught keyboard interruption, restoring state and exitting.")
     b.set_light(mimickLampId, save_state)
 
     exit()
